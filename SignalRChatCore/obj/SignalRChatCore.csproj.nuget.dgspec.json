@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\VirtWin10\\source\\repos\\SignalRChatCore\\SignalRChatCore\\SignalRChatCore.csproj": {}
+    "C:\\Users\\VirtWin10\\Desktop\\SignalRChatCore\\SignalRChatCore\\SignalRChatCore.csproj": {}
   },
   "projects": {
-    "C:\\Users\\VirtWin10\\source\\repos\\SignalRChatCore\\SignalRChatCore\\SignalRChatCore.csproj": {
+    "C:\\Users\\VirtWin10\\Desktop\\SignalRChatCore\\SignalRChatCore\\SignalRChatCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\VirtWin10\\source\\repos\\SignalRChatCore\\SignalRChatCore\\SignalRChatCore.csproj",
+        "projectUniqueName": "C:\\Users\\VirtWin10\\Desktop\\SignalRChatCore\\SignalRChatCore\\SignalRChatCore.csproj",
         "projectName": "SignalRChatCore",
-        "projectPath": "C:\\Users\\VirtWin10\\source\\repos\\SignalRChatCore\\SignalRChatCore\\SignalRChatCore.csproj",
+        "projectPath": "C:\\Users\\VirtWin10\\Desktop\\SignalRChatCore\\SignalRChatCore\\SignalRChatCore.csproj",
         "packagesPath": "C:\\Users\\VirtWin10\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\VirtWin10\\source\\repos\\SignalRChatCore\\SignalRChatCore\\obj\\",
+        "outputPath": "C:\\Users\\VirtWin10\\Desktop\\SignalRChatCore\\SignalRChatCore\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -56,6 +56,10 @@
             "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
               "target": "Package",
               "version": "[3.1.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Proxies": {
+              "target": "Package",
+              "version": "[3.1.7, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
