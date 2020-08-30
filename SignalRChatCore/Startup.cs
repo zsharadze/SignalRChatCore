@@ -44,7 +44,11 @@ namespace SignalRChatCore
             });
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddSignalR();
+            services.AddSignalR()
+    .AddJsonProtocol(options =>
+    {
+        options.PayloadSerializerOptions.PropertyNamingPolicy = null;//es imistvisaa aq rom Hum-idan server sidedan clientis funciis gamozaxebisas property name ar daalowercasos. amis gareshe newJob.Name newJob.name iqneboda javascriptshi
+    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

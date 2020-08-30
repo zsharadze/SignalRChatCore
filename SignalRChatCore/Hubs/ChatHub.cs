@@ -96,13 +96,7 @@ namespace SignalRChatCore.Hubs
 
                 // Broadcast the message
                 //map
-                //todo: es mapperi helpershi gadavitano
-                MessageViewModel messageViewModel = new MessageViewModel();
-                messageViewModel.Content = BasicEmojis.ParseEmojis(msg.Content);
-                messageViewModel.From = msg.FromUser.DisplayName;
-                messageViewModel.To = msg.ToRoom.Name;
-                messageViewModel.Avatar = msg.FromUser.Avatar;
-                messageViewModel.Timestamp = new DateTime(long.Parse(msg.Timestamp)).ToLongTimeString();
+                MessageViewModel messageViewModel = Mapper.MessageToMessageViewModel(msg);
                 Clients.Group(roomName).SendAsync("newMessage", messageViewModel);
 
             }
@@ -177,10 +171,7 @@ namespace SignalRChatCore.Hubs
                     {
                         // Update room list
                         //map
-                        //todo es maperi helpershi gadavitano
-                        RoomViewModel roomViewModel = new RoomViewModel();
-                        roomViewModel.Id = room.Id;
-                        roomViewModel.Name = room.Name;
+                        RoomViewModel roomViewModel = Mapper.RoomToRoomViewModel(room);
 
                         _Rooms.Add(roomViewModel);
                         Clients.All.SendAsync("addChatRoom", roomViewModel);
@@ -227,16 +218,10 @@ namespace SignalRChatCore.Hubs
                 .Reverse()
                 .ToList();
 
-            //todo: es mapperi helpershi gadavitano
             List<MessageViewModel> returnVal = new List<MessageViewModel>();
             foreach (var item in messageHistory)
             {
-                MessageViewModel messageViewModel = new MessageViewModel();
-                messageViewModel.Content = BasicEmojis.ParseEmojis(item.Content);
-                messageViewModel.From = item.FromUser.DisplayName;
-                messageViewModel.To = item.ToRoom.Name;
-                messageViewModel.Avatar = item.FromUser.Avatar;
-                messageViewModel.Timestamp = new DateTime(long.Parse(item.Timestamp)).ToLongTimeString();
+                MessageViewModel messageViewModel = Mapper.MessageToMessageViewModel(item);
                 returnVal.Add(messageViewModel);
             }
             return returnVal.AsEnumerable();
@@ -250,10 +235,7 @@ namespace SignalRChatCore.Hubs
                 foreach (var room in _context.Rooms)
                 {
                     //map
-                    //todo es maperi helpershi gadavitano
-                    RoomViewModel roomViewModel = new RoomViewModel();
-                    roomViewModel.Id = room.Id;
-                    roomViewModel.Name = room.Name;
+                    RoomViewModel roomViewModel = Mapper.RoomToRoomViewModel(room);
 
                     _Rooms.Add(roomViewModel);
                 }
@@ -270,29 +252,25 @@ namespace SignalRChatCore.Hubs
         #region OnConnected/OnDisconnected
         public override Task OnConnectedAsync()
         {
-            try
-            {
-                var user = _context.Users.Where(u => u.UserName == IdentityName).FirstOrDefault();
+            //try
+            //{
+            //    var user = _context.Users.Where(u => u.UserName == IdentityName).FirstOrDefault();
 
-                //todo maperi gadavitano helpershi
-                //map
-                UserViewModel userViewModel = new UserViewModel();
-                userViewModel.Username = user.UserName;
-                //userViewModel.Device = GetDevice();
-                userViewModel.CurrentRoom = "";
+            //    //map
+            //    UserViewModel userViewModel = Mapper.ApplicationUserToUserViewModel(user);
 
-                if (!_Connections.Any(u => u.Username == IdentityName))
-                {
-                    _Connections.Add(userViewModel);
-                    _ConnectionsMap.Add(IdentityName, Context.ConnectionId);
-                }
+            //    if (!_Connections.Any(u => u.Username == IdentityName))
+            //    {
+            //        _Connections.Add(userViewModel);
+            //        _ConnectionsMap.Add(IdentityName, Context.ConnectionId);
+            //    }
 
-                Clients.Caller.SendAsync("getProfileInfo", user.DisplayName, user.Avatar);
-            }
-            catch (Exception ex)
-            {
-                Clients.Caller.SendAsync("onError", "OnConnected:" + ex.Message);
-            }
+            //    Clients.Caller.SendAsync("getProfileInfo", user.DisplayName, user.Avatar);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Clients.Caller.SendAsync("onError", "OnConnected:" + ex.Message);
+            //}
 
             return base.OnConnectedAsync();
         }
