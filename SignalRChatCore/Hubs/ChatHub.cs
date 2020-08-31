@@ -252,25 +252,25 @@ namespace SignalRChatCore.Hubs
         #region OnConnected/OnDisconnected
         public override Task OnConnectedAsync()
         {
-            //try
-            //{
-            //    var user = _context.Users.Where(u => u.UserName == IdentityName).FirstOrDefault();
+            try
+            {
+                var user = _context.Users.Where(u => u.UserName == IdentityName).FirstOrDefault();
 
-            //    //map
-            //    UserViewModel userViewModel = Mapper.ApplicationUserToUserViewModel(user);
+                //map
+                UserViewModel userViewModel = Mapper.ApplicationUserToUserViewModel(user);
 
-            //    if (!_Connections.Any(u => u.Username == IdentityName))
-            //    {
-            //        _Connections.Add(userViewModel);
-            //        _ConnectionsMap.Add(IdentityName, Context.ConnectionId);
-            //    }
+                if (!_Connections.Any(u => u.Username == IdentityName))
+                {
+                    _Connections.Add(userViewModel);
+                    _ConnectionsMap.Add(IdentityName, Context.ConnectionId);
+                }
 
-            //    Clients.Caller.SendAsync("getProfileInfo", user.DisplayName, user.Avatar);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Clients.Caller.SendAsync("onError", "OnConnected:" + ex.Message);
-            //}
+                Clients.Caller.SendAsync("getProfileInfo", user.DisplayName, user.Avatar);
+            }
+            catch (Exception ex)
+            {
+                Clients.Caller.SendAsync("onError", "OnConnected:" + ex.Message);
+            }
 
             return base.OnConnectedAsync();
         }
