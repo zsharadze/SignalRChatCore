@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SignalRChatCore.Data;
 using SignalRChatCore.Helpers;
 using SignalRChatCore.Models;
@@ -240,7 +241,6 @@ namespace SignalRChatCore.Hubs
                     _Rooms.Add(roomViewModel);
                 }
             }
-
             return _Rooms.ToList();
         }
 

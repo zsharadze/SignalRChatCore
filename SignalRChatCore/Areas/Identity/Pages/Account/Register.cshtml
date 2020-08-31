@@ -1,52 +1,52 @@
 ﻿@page
-@model RegisterViewModel
+@model RegisterModel
 @{
     ViewData["Title"] = "Register";
 }
 <div class="d-flex h-100 justify-content-center align-items-center">
     <div class="register-container">
-        <form method="post" asp-controller="Account" asp-action="Register" asp-area="Identity" asp-antiforgery="true">
+        <form method="post" asp-page="/Account/Register" asp-area="Identity" asp-antiforgery="true">
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" placeholder="Username" />
-                <span asp-validation-for="Username" class="text-danger"></span>
+                <label asp-for="Input.Username"></label>
+                <input asp-for="Input.Username" class="form-control" placeholder="Username" />
+                <span asp-validation-for="Input.Username" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" class="form-control" placeholder="Password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ConfirmPassword"></label>
-                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DisplayName"></label>
-                <input asp-for="DisplayName" class="form-control" placeholder="Display Name" />
-                <span asp-validation-for="DisplayName" class="text-danger"></span>
+                <label asp-for="Input.DisplayName"></label>
+                <input asp-for="Input.DisplayName" class="form-control" placeholder="Display Name" />
+                <span asp-validation-for="Input.DisplayName" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <p>Select your Avatar</p>
                 <label>
-                    <input type="radio" asp-for="Avatar" value="0" checked="checked" />
+                    <input type="radio" asp-for="Input.Avatar" value="0" checked="checked" />
                     <img class="avatar-icon" src="@Url.Content("~/images/icons/avatar1.png")" alt="" />
                 </label>
                 <label>
-                    <input type="radio" asp-for="Avatar" value="1"/>
+                    <input type="radio" asp-for="Input.Avatar" value="1"/>
                     <img class="avatar-icon" src="@Url.Content("~/images/icons/avatar2.png")" alt="" />
                 </label>
                 <label>
-                    <input type="radio" asp-for="Avatar" value="2"/>
+                    <input type="radio" asp-for="Input.Avatar" value="2"/>
                     <img class="avatar-icon" src="@Url.Content("~/images/icons/avatar3.png")" alt="" />
                 </label>
                 <label>
-                    <input type="radio" asp-for="Avatar" value="3"/>
+                    <input type="radio" asp-for="Input.Avatar" value="3"/>
                     <img class="avatar-icon" src="@Url.Content("~/images/icons/avatar4.png")" alt="" />
                 </label>
             </div>

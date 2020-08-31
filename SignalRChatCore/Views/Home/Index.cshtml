@@ -4,11 +4,16 @@
 
 
 
-
-<div id="testdiv">
-
+<div class="alert alert-warning alert-dismissible hidden" id="errorAlert" role="alert">
+    <span id="serverInfoMessage"></span>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
 </div>
 
+rooms
+<div id="roomsList">
+</div>
 
-<button id="btnAddToDiv">add</button>
+@*<button id="btnAddToDiv">add</button>*@
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
