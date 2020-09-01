@@ -9,6 +9,7 @@ using SignalRChatCore.Data;
 using SignalRChatCore.Helpers;
 using SignalRChatCore.Models;
 using SignalRChatCore.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace SignalRChatCore.Hubs
 {
@@ -191,6 +192,11 @@ namespace SignalRChatCore.Hubs
             {
                 // Delete from database
                 var room = _context.Rooms.Where(r => r.Name == roomName && r.UserAccount.UserName == IdentityName).FirstOrDefault();
+                if (room == null)
+                {
+                    Clients.Caller.SendAsync("onError", "Can't delete this chat room. you are not author of this room");
+                    return;
+                }
                 _context.Rooms.Remove(room);
                 _context.SaveChanges();
 
@@ -204,7 +210,7 @@ namespace SignalRChatCore.Hubs
                 // Tell all users to update their room list
                 Clients.All.SendAsync("removeChatRoom", roomViewModel);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Clients.Caller.SendAsync("onError", "Can't delete this chat room.");
             }

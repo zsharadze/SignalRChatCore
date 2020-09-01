@@ -17,52 +17,46 @@
         </div>
         <div class="rooms">
             <ul id="room-list">
-                @*<li><a href="#" data-bind="text: $data.name, clickLink: joinRoom, css: { active: $root.joinedRoom() == $data.name()}"></a></li>*@
             </ul>
         </div>
         <div class="user d-flex align-items-center">
             <img id="userAvatar" class="user-avatar" src="" />
             <a id="userName" href="#" class="user-name"></a>
             <div class="user-signout ml-auto">
-                @*@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                {
-                    @Html.AntiForgeryToken()
+                <form id="logoutForm" class="navbar-right" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                     <a href="javascript:document.getElementById('logoutForm').submit()" title="Sign Out"><i class="fas fa-sign-out-alt"></i></a>
-                }*@
-            <form id="logoutForm" class="navbar-right" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <a href="javascript:document.getElementById('logoutForm').submit()" title="Sign Out"><i class="fas fa-sign-out-alt"></i></a>
-            </form>
+                </form>
             </div>
         </div>
     </div>
-    <div class="main-content" data-bind="visible: joinedRoom().length == 0">
+    <div id="pleaseJoinTxt" class="main-content">
         <span class="m-auto">
             Please select room to join!
         </span>
     </div>
-    <div class="main-content" data-bind="visible: joinedRoom().length > 0">
+    <div id="lobbyMain" class="main-content">
         <div class="chat-header d-flex justify-content-between align-items-center">
-            <h5 id="joinedRoom" data-bind="text: joinedRoom()">Lobby</h5>
+            <h5 id="joinedRoom">Lobby</h5>
             <button data-toggle="modal" data-target="#remove-room-modal" class="btnDeleteRoom">
                 <i class="fas fa-times"></i>
             </button>
         </div>
         <div class="chat-body better-scrollbar">
-            <ul data-bind="foreach: chatMessages">
+            <ul id="chatMessages">
                 <li>
-                    <div class="chat-message d-flex" data-bind="css: $data.isMine() === true ? 'ismine' : 'isother'">
+                    <div class="chat-message d-flex">
                         <div class="left-side">
-                            <img src="~/Content/icons/avatar1.png" class="message-avatar" data-bind="attr: { src: $data.avatar }" />
+                            <img src="@Url.Content("~/images/icons/avatar1.png")" class="message-avatar" />
                         </div>
                         <div class="message-content d-flex flex-column">
                             <div class="d-flex justify-content-between">
-                                <span class="author" data-bind="text:$data.from"></span>
+                                <span class="author"></span>
                                 <span class="timestamp">
                                     <i class="glyphicon glyphicon-time"></i>
-                                    <span data-bind="text:$data.timestamp"></span>
+                                    <span></span>
                                 </span>
                             </div>
-                            <span class="content" data-bind="html:$data.content"></span>
+                            <span class="content"></span>
                         </div>
                     </div>
 
@@ -79,36 +73,36 @@
                 <a id="emojibtn" href="#">
                     <i class="far fa-smile"></i>
                 </a>
-                <i class="fas fa-paper-plane" id="btn-send-message" data-bind="click: sendNewMessage"></i>
+                <i class="fas fa-paper-plane" id="btn-send-message" title="Send"></i>
             </div>
             <div class="emoticon-container hidden" id="emojis-container">
                 <a href="#">
                     <input type="hidden" value=":)" />
-                    <img src="~/Content/emojis/emoji1.png" />
+                    <img src="@Url.Content("~/images/emojis/emoji1.png")" />
                 </a>
                 <a href="#">
                     <input type="hidden" value=":P" />
-                    <img src="~/Content/emojis/emoji2.png" />
+                    <img src="@Url.Content("~/images/emojis/emoji2.png")" />
                 </a>
                 <a href="#">
                     <input type="hidden" value=":O" />
-                    <img src="~/Content/emojis/emoji3.png" />
+                    <img src="@Url.Content("~/images/emojis/emoji3.png")" />
                 </a>
                 <a href="#">
                     <input type="hidden" value=":-)" />
-                    <img src="~/Content/emojis/emoji4.png" />
+                    <img src="@Url.Content("~/images/emojis/emoji4.png")" />
                 </a>
                 <a href="#">
                     <input type="hidden" value="B|" />
-                    <img src="~/Content/emojis/emoji5.png" />
+                    <img src="@Url.Content("~/images/emojis/emoji5.png")" />
                 </a>
                 <a href="#">
                     <input type="hidden" value=":D" />
-                    <img src="~/Content/emojis/emoji6.png" />
+                    <img src="@Url.Content("~/images/emojis/emoji6.png")" />
                 </a>
                 <a href="#">
                     <input type="hidden" value="<3" />
-                    <img src="~/Content/emojis/emoji7.png" />
+                    <img src="@Url.Content("~/images/emojis/emoji7.png")" />
                 </a>
             </div>
         </div>
@@ -153,7 +147,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" data-bind="click: createRoom">Create</button>
+                <button id="createRoom" type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
             </div>
         </div>
     </div>
@@ -173,9 +167,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal" data-bind="click: deleteRoom">Delete</button>
+                <button id="deleteRoom" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
             </div>
         </div>
     </div>
 </div>
-<script src="~/js/signalr/dist/browser/signalr.js"></script>
+
+@section Scripts{
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/MyChat.js" asp-append-version="true"></script>
+    <script src="~/js/MyScript.js" asp-append-version="true"></script>
+}
