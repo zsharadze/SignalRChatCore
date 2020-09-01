@@ -8,7 +8,7 @@ namespace SignalRChatCore.Helpers
 {
     public class FileValidator
     {
-        public static bool ValidSize(int size)
+        public static bool ValidSize(long size)
         {
             // Maximum file size allowed: 500KB
             return (size < 500000);
