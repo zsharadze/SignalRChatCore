@@ -1,6 +1,6 @@
 # SignalRChatCore
 
-This is implementation of AKouki/SignalR-Chat project in ASP.NET Core. I have rewriten it with jquery.
+This is implementation of AKouki/SignalR-Chat project in ASP.NET Core. I have rewritten it with jquery.
 
 ## Features
 * Group chat
