@@ -36,6 +36,8 @@ namespace SignalRChatCore.Helpers
             userViewModel.Username = user.UserName;
             //userViewModel.Device = GetDevice();
             userViewModel.CurrentRoom = "";
+            userViewModel.Avatar = user.Avatar;
+            userViewModel.DisplayName = user.DisplayName;
 
             return userViewModel;
         }

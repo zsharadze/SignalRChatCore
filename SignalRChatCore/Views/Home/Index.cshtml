@@ -109,14 +109,14 @@
     </div>
     <div class="right-sidebar">
         <div class="header">
-            <h5>Who's Here (<span data-bind="text: filteredChatUsers().length">0</span>)</h5>
+            <h5>Who's Here <span id="chatUsersCount">0</span></h5>
         </div>
         <div class="chat-users better-scrollbar">
-            <ul id="user-list" data-bind="foreach: filteredChatUsers">
-                <li>
+            <ul id="user-list">
+                @*<li>
                     <div class="user-inner d-flex align-items-center">
                         <div class="left-side">
-                            <img src="~/Content/icons/avatar1.png" data-bind="attr: { src:$data.avatar }" class="user-avatar" />
+                            <img src="~/Content/icons/avatar1.png" class="user-avatar" />
                         </div>
                         <div class="right-side d-flex flex-column">
                             <input type="hidden" class="username" data-bind="value:$data.userName" />
@@ -124,7 +124,7 @@
                             <small data-bind="text: $data.device"></small>
                         </div>
                     </div>
-                </li>
+                </li>*@
             </ul>
         </div>
         <div class="search-user">

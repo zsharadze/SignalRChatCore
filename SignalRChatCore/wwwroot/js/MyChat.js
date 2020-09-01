@@ -2,7 +2,6 @@
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
 var chatRooms = [];
-var chatUsers = [];
 var joinedRoom;
 var myName;
 var myAvatar;
@@ -33,7 +32,14 @@ $(document).ready(function () {
     connection.start().then(function () {
         console.log("SignalR started");
         roomList();
-        userList();
+        //join first room
+        setTimeout(function () {
+            if (chatRooms.length > 0) {
+                joinedRoom = chatRooms[0].Name;
+                joinRoom();
+            }
+        }, 250);
+        
     }).catch(function (message) {
         $("#serverInfoMessage").html(message);
         $("#errorAlert").removeClass("hidden").show().delay(5000).fadeOut(500);
@@ -49,12 +55,12 @@ $(document).ready(function () {
         myName = displayName;
         myAvatar = avatar;
         $("#userName").html(myName);
-        $("#userAvatar").attr("src", "/images/icons/avatar" + (parseInt(avatar)+1)+".png");
+        $("#userAvatar").attr("src", "/images/icons/avatar" + (parseInt(avatar) + 1) + ".png");
     });
 
     connection.on("addChatRoom", function (room) {
         chatRooms.push(room);
-        addRoomToLeftPanel(room.Name);
+        addRoomToLeftSidebar(room.Name);
     });
 
     connection.on("onRoomDeleted", function (message) {
@@ -76,8 +82,16 @@ $(document).ready(function () {
 
     connection.on("newMessage", function (newMessage) {
         addMessageToHistory(newMessage);
-         
+
         $(".chat-body").animate({ scrollTop: $(".chat-body")[0].scrollHeight }, 1000);
+    });
+
+    connection.on("addUser", function (user) {
+         addUsersToRightSidebar(user);
+    });
+
+    connection.on("removeUser", function (user) {
+        $("#liUser-" + user.Username).remove();
     });
 });
 
@@ -87,27 +101,29 @@ function roomList() {
         for (var i = 0; i < result.length; i++) {
             chatRooms.push(result[i]);
             //join first room
-            if (i == 0) {
-                joinedRoom = chatRooms[0].Name;
-                joinRoom();
-            }
+            //if (i == 0) {
+            //    joinedRoom = chatRooms[0].Name;
+            //    joinRoom();
+            //}
             //
 
+            
+
             //add room names to left list
-            addRoomToLeftPanel(result[i].Name)
+            addRoomToLeftSidebar(result[i].Name)
         }
 
         detectRoom();
-    }); 
+        
+    });
 }
 
 function userList() {
+    if (!joinedRoom)
+        return;
     connection.invoke("getUsers", joinedRoom).then((result) => {
-        chatUsers = [];
-        for (var i = 0; i < result.length; i++) {
-            chatUsers.push(result[i]);
-            $("#usersList").append("<br>" + result[i].Username);
-        }
+        $("#chatUsersCount").html(result.length);
+        populateUserList(result);
     });
 }
 
@@ -120,23 +136,27 @@ function joinRoom() {
     });
 }
 
-function createRoom () {
+function createRoom() {
     var name = $("#roomName").val();
     connection.invoke("createRoom", name);
     $("#roomName").val("");
 }
 
-function addRoomToLeftPanel(roomName) {
+function addRoomToLeftSidebar(roomName) {
     var sub_li = $('<li/>');
     var aTag = $("<a>");
     aTag.attr("href", "#");
     aTag.attr("data-roomName", roomName);
     aTag.text(roomName);
-    aTag.attr("id","roomBtn"+roomName);
+    aTag.attr("id", "roomBtn" + roomName);
     if (joinedRoom == roomName)
         aTag.addClass("active");
     aTag.click(function (event) {
         event.preventDefault();
+
+        var roomToJoin = $(this).attr("data-roomName");
+        if (roomToJoin == joinedRoom)
+            return;
 
         joinedRoom = $(this).attr("data-roomName");
         joinRoom();
@@ -248,4 +268,47 @@ function sendMessage() {
         return;
     connection.invoke("send", joinedRoom, $("#chat-message").val());
     $("#chat-message").val("");
+}
+
+function populateUserList(chatUsers) {
+    $("#user-list").html("");
+    for (var i = 0; i < chatUsers.length; i++) {
+        addUsersToRightSidebar(chatUsers[i]);
+    }
+}
+
+function addUsersToRightSidebar(user) {
+    var sub_li = $('<li/>');
+    sub_li.attr("id", "liUser-" + user.Username);
+    var divMain = $('<div>');
+    divMain.addClass("user-inner");
+    divMain.addClass("d-flex");
+    divMain.addClass("align-items-center");
+
+    var divLeftSide = $('<div>');
+    divLeftSide.addClass("left-side");
+
+    var imgAvatar = $('<img/>');
+    imgAvatar.addClass("user-avatar");
+    imgAvatar.attr("src", "/images/icons/avatar" + (parseInt(user.Avatar) + 1) + ".png");
+    divLeftSide.append(imgAvatar);
+    divMain.append(divLeftSide);
+
+    var divFlexColumn = $('<div>');
+    divFlexColumn.addClass("right-side");
+    divFlexColumn.addClass("d-flex");
+    divFlexColumn.addClass("flex-column");
+
+    var inputUsername = $('<input/>');
+    inputUsername.attr("type", "hidden");
+    inputUsername.val(user.Username);
+    divFlexColumn.append(inputUsername);
+
+    var spanDisplayName = $('<span>');
+    spanDisplayName.addClass("author");
+    spanDisplayName.html(user.DisplayName);
+    divFlexColumn.append(spanDisplayName);
+    divMain.append(divFlexColumn);
+    sub_li.append(divMain);
+    $("#user-list").append(sub_li);
 }
