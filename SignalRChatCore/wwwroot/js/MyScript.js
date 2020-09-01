@@ -21,7 +21,6 @@
         input.focus();
         input.change();
 
-
         hideEmojiContainer();
     });
 

@@ -209,6 +209,15 @@ function detectRoom() {
     if (joinedRoom) {
         $("#pleaseJoinTxt").css("display", "none");
         $("#lobbyMain").css("display", "flex");
+
+        //fix bug losting emoji values after join
+        $("#inputEmoji1").val(":)");
+        $("#inputEmoji2").val(":P");
+        $("#inputEmoji3").val(":O");
+        $("#inputEmoji4").val(":-)");
+        $("#inputEmoji5").val("B|");
+        $("#inputEmoji6").val(":D");
+        $("#inputEmoji7").val("<3");
     }
     else {
         $("#pleaseJoinTxt").css("display", "flex");
