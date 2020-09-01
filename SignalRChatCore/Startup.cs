@@ -47,7 +47,7 @@ namespace SignalRChatCore
             services.AddSignalR()
     .AddJsonProtocol(options =>
     {
-        options.PayloadSerializerOptions.PropertyNamingPolicy = null;//es imistvisaa aq rom Hum-idan server sidedan clientis funciis gamozaxebisas property name ar daalowercasos. amis gareshe newJob.Name newJob.name iqneboda javascriptshi
+        options.PayloadSerializerOptions.PropertyNamingPolicy = null;
     });
         }
 
