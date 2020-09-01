@@ -29,6 +29,11 @@ $(document).ready(function () {
         }
     });
 
+    $("#searchUser").on('keyup', function (e) {
+        if ($("#searchUser").val())
+            console.log($("#searchUser").val());
+    });
+
     connection.start().then(function () {
         console.log("SignalR started");
         roomList();
@@ -39,7 +44,7 @@ $(document).ready(function () {
                 joinRoom();
             }
         }, 250);
-        
+
     }).catch(function (message) {
         $("#serverInfoMessage").html(message);
         $("#errorAlert").removeClass("hidden").show().delay(5000).fadeOut(500);
@@ -87,7 +92,7 @@ $(document).ready(function () {
     });
 
     connection.on("addUser", function (user) {
-         addUsersToRightSidebar(user);
+        addUsersToRightSidebar(user);
     });
 
     connection.on("removeUser", function (user) {
@@ -107,14 +112,14 @@ function roomList() {
             //}
             //
 
-            
+
 
             //add room names to left list
             addRoomToLeftSidebar(result[i].Name)
         }
 
         detectRoom();
-        
+
     });
 }
 
