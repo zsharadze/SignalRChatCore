@@ -280,6 +280,7 @@ function populateUserList(chatUsers) {
 function addUsersToRightSidebar(user) {
     var sub_li = $('<li/>');
     sub_li.attr("id", "liUser-" + user.Username);
+    sub_li.attr("data-username", user.Username);
     var divMain = $('<div>');
     divMain.addClass("user-inner");
     divMain.addClass("d-flex");

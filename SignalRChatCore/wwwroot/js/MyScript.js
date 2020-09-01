@@ -1,7 +1,7 @@
 ﻿$(function () {
 
     $('ul#user-list').on('click', 'li', function () {
-        var username = $("input[type=hidden].username", $(this)).val();
+        var username = $(this).attr("data-username");
         var input = $('#chat-message');
 
         var text = input.val();
@@ -20,17 +20,13 @@
         input.val(input.val() + value);
         input.focus();
         input.change();
+
+        hideEmojiContainer();
     });
 
     // Show/Hide Emoji Window
     $("#emojibtn").click(function () {
-        var x = $("#emojis-container");
-        if (x.hasClass("hidden")) {
-            x.removeClass("hidden");
-        }
-        else {
-            x.addClass("hidden");
-        }
+        hideEmojiContainer();
     });
 
     $("#chat-message, #btn-send-message").click(function () {
@@ -41,3 +37,13 @@
         $("input").val("");
     });
 });
+
+function hideEmojiContainer() {
+    var x = $("#emojis-container");
+    if (x.hasClass("hidden")) {
+        x.removeClass("hidden");
+    }
+    else {
+        x.addClass("hidden");
+    }
+}
