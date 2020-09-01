@@ -3,6 +3,7 @@
 This is implementation of AKouki/SignalR-Chat project in ASP.NET Core. I have rewritten it with jquery.
 
 ## Features
+* User registration
 * Group chat
 * Private chat /private(Name) Hello, how are you?
 * Photo message
