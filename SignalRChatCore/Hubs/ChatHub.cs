@@ -100,7 +100,6 @@ namespace SignalRChatCore.Hubs
                 //map
                 MessageViewModel messageViewModel = Mapper.MessageToMessageViewModel(msg);
                 Clients.Group(roomName).SendAsync("newMessage", messageViewModel);
-
             }
             catch (Exception)
             {

@@ -20,10 +20,14 @@ $(document).ready(function () {
     });
 
     $("#btn-send-message").click(function (event) {
-        //todo: aq var
         event.preventDefault();
-        connection.invoke("send", joinedRoom, $("message").html());
-        $("message").html("");
+        sendMessage();
+    });
+
+    $("#chat-message").on('keyup', function (e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            sendMessage();
+        }
     });
 
     connection.start().then(function () {
@@ -69,6 +73,12 @@ $(document).ready(function () {
     connection.on("removeChatRoom", function (room) {
         roomDeleted(room.Id);
     });
+
+    connection.on("newMessage", function (newMessage) {
+        addMessageToHistory(newMessage);
+         
+        $(".chat-body").animate({ scrollTop: $(".chat-body")[0].scrollHeight }, 1000);
+    });
 });
 
 function roomList() {
@@ -88,14 +98,7 @@ function roomList() {
         }
 
         detectRoom();
-    });
-
-    //chatHub.server.getRooms().done(function (result) {
-    //    self.chatRooms.removeAll();
-    //    for (var i = 0; i < result.length; i++) {
-    //        self.chatRooms.push(new ChatRoom(result[i].Id, result[i].Name));
-    //    }
-    //});
+    }); 
 }
 
 function userList() {
@@ -106,17 +109,6 @@ function userList() {
             $("#usersList").append("<br>" + result[i].Username);
         }
     });
-
-    //chatHub.server.getUsers(self.joinedRoom()).done(function (result) {
-    //    self.chatUsers.removeAll();
-    //    for (var i = 0; i < result.length; i++) {
-    //        self.chatUsers.push(new ChatUser(result[i].Username,
-    //            result[i].DisplayName,
-    //            result[i].Avatar,
-    //            result[i].CurrentRoom,
-    //            result[i].Device))
-    //    }
-    //});
 }
 
 function joinRoom() {
@@ -187,69 +179,73 @@ function messageHistory() {
     connection.invoke("getMessageHistory", joinedRoom).then((result) => {
         $("#chatMessages").html("");
         for (var i = 0; i < result.length; i++) {
-            var isMine = result[i].From == myName;
-
-            var sub_li = $('<li/>');
-            var divMain = $('<div>');
-            divMain.addClass("chat-message");
-            divMain.addClass("d-flex");
-            if (isMine)
-                divMain.addClass("ismine");
-            else
-                divMain.addClass("isother");
-
-            var leftSideDiv = $('<div>');
-            leftSideDiv.addClass("left-side");
-            var imgAvatar = $('<img/>');
-            imgAvatar.addClass("message-avatar");
-            imgAvatar.attr("src", "/images/icons/avatar" + (parseInt(result[i].Avatar) + 1) + ".png");
-            leftSideDiv.append(imgAvatar);
-            divMain.append(leftSideDiv);
-
-            var flexcolumnDiv = $('<div>');
-            flexcolumnDiv.addClass("message-content");
-            flexcolumnDiv.addClass("d-flex");
-            flexcolumnDiv.addClass("flex-column");
-
-            var justifycontentbetweenDiv = $('<div>');
-            justifycontentbetweenDiv.addClass("d-flex");
-            justifycontentbetweenDiv.addClass("justify-content-between");
-
-            var authorSpan = $('<span>');
-            authorSpan.addClass("author");
-            authorSpan.html(result[i].From);
-            justifycontentbetweenDiv.append(authorSpan);
-
-            var timestampSpan = $('<span>');
-            timestampSpan.addClass("timestamp");
-            var glyphicontime = $('<i>');
-            glyphicontime.addClass("glyphicon");
-            glyphicontime.addClass("glyphicon-time");
-            timestampSpan.append(glyphicontime);
-
-            var spanTextTimestamp2 = $('<span>');
-            spanTextTimestamp2.html(result[i].Timestamp);
-            timestampSpan.append(spanTextTimestamp2);
-            justifycontentbetweenDiv.append(timestampSpan);
-            flexcolumnDiv.append(justifycontentbetweenDiv);
-
-            var contentSpan = $('<span>');
-            contentSpan.addClass("content");
-            contentSpan.html(result[i].Content);
-            flexcolumnDiv.append(contentSpan);
-            divMain.append(flexcolumnDiv);
-            sub_li.append(divMain);
-            $("#chatMessages").append(sub_li);
-
-            //self.chatMessages.push(new ChatMessage(result[i].Content,
-            //    result[i].Timestamp,
-            //    result[i].From,
-            //    isMine,
-            //    result[i].Avatar));
+            addMessageToHistory(result[i]);
         }
 
         $(".chat-body").animate({ scrollTop: $(".chat-body")[0].scrollHeight }, 1000);
 
     });
 }
- 
+
+function addMessageToHistory(newMessage) {
+    var isMine = newMessage.From == myName;
+
+    var sub_li = $('<li/>');
+    var divMain = $('<div>');
+    divMain.addClass("chat-message");
+    divMain.addClass("d-flex");
+    if (isMine)
+        divMain.addClass("ismine");
+    else
+        divMain.addClass("isother");
+
+    var leftSideDiv = $('<div>');
+    leftSideDiv.addClass("left-side");
+    var imgAvatar = $('<img/>');
+    imgAvatar.addClass("message-avatar");
+    imgAvatar.attr("src", "/images/icons/avatar" + (parseInt(newMessage.Avatar) + 1) + ".png");
+    leftSideDiv.append(imgAvatar);
+    divMain.append(leftSideDiv);
+
+    var flexcolumnDiv = $('<div>');
+    flexcolumnDiv.addClass("message-content");
+    flexcolumnDiv.addClass("d-flex");
+    flexcolumnDiv.addClass("flex-column");
+
+    var justifycontentbetweenDiv = $('<div>');
+    justifycontentbetweenDiv.addClass("d-flex");
+    justifycontentbetweenDiv.addClass("justify-content-between");
+
+    var authorSpan = $('<span>');
+    authorSpan.addClass("author");
+    authorSpan.html(newMessage.From);
+    justifycontentbetweenDiv.append(authorSpan);
+
+    var timestampSpan = $('<span>');
+    timestampSpan.addClass("timestamp");
+    var glyphicontime = $('<i>');
+    glyphicontime.addClass("glyphicon");
+    glyphicontime.addClass("glyphicon-time");
+    timestampSpan.append(glyphicontime);
+
+    var spanTextTimestamp2 = $('<span>');
+    spanTextTimestamp2.html(newMessage.Timestamp);
+    timestampSpan.append(spanTextTimestamp2);
+    justifycontentbetweenDiv.append(timestampSpan);
+    flexcolumnDiv.append(justifycontentbetweenDiv);
+
+    var contentSpan = $('<span>');
+    contentSpan.addClass("content");
+    contentSpan.html(newMessage.Content);
+    flexcolumnDiv.append(contentSpan);
+    divMain.append(flexcolumnDiv);
+    sub_li.append(divMain);
+    $("#chatMessages").append(sub_li);
+}
+
+function sendMessage() {
+    if (!$("#chat-message").val())
+        return;
+    connection.invoke("send", joinedRoom, $("#chat-message").val());
+    $("#chat-message").val("");
+}
