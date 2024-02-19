@@ -19,4 +19,4 @@ This is Chat Application in ASP.NET Core 3.1 with SignalR. I have rewritten it f
 for application screenshots and original project refer to: [original](https://github.com/AKouki/SignalR-Chat).
 
 ###### About me
-My name is Zviad Sharadze. I'm .Net Developer from Tbilisi, Georgia. I'm Microsoft Certified Professional.
+My name is Zviad Sharadze. I'm .Net Developer from Tbilisi, Georgia.
